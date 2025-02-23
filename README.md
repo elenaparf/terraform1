@@ -88,47 +88,48 @@ personal.auto.tfvars
 4. Раскомментируем блок кода, примерно расположенный на строчках 29–42 файла **main.tf**.
 Выполните команду ```terraform validate```. Объясните, в чём заключаются намеренно допущенные ошибки. Исправьте их.  
  ![ter_9](https://github.com/user-attachments/assets/3be899a6-ddb1-4548-a15d-ee0faeb0dd9a)
+
 ошибка указывает что имя контейнера не может начинаться с цифры  
 
 ошибка исправлена запускаем валидацию еще раз 
- ![рис 10](https://github.com/ysatii/terraform_hw1/blob/main/img/ter_10.jpg)  
+ ![ter_10](https://github.com/user-attachments/assets/3a82ca46-0090-4f18-9ad3-e3cb514640af)
 
  
- ![рис 11](https://github.com/ysatii/terraform_hw1/blob/main/img/ter_11.jpg)  
+ ![ter_11](https://github.com/user-attachments/assets/cbaaa069-0cc9-4e4f-a0f2-0b02924082cd)
   снова Ошибка, указывает что 
 строка 24: resource "docker_image" должен иметь два параметра имя и тип  и имя 
 
 
 исправляем запускаем снова 
 опять ошибка,  31:   name  = "example_${random_password.random_string_FAKE.resulT}"
- ![рис 12](https://github.com/ysatii/terraform_hw1/blob/main/img/ter_12.jpg)  
+ ![ter_12](https://github.com/user-attachments/assets/f416168a-af68-4224-bb54-95065e324f95)
 
 Имя контейнера формируется как example_${random_password.random_string_FAKE.resulT}, а правильно: example_${random_password.random_string.result}
 Исправляем  
   
- ![рис 13](https://github.com/ysatii/terraform_hw1/blob/main/img/ter_13.jpg)  
+ ![ter_13](https://github.com/user-attachments/assets/79b0b004-1f03-4843-9198-50622ada04fb)
 
  Успешно!  
- ![рис 14](https://github.com/ysatii/terraform_hw1/blob/main/img/ter_14.jpg)  
- ![рис 15](https://github.com/ysatii/terraform_hw1/blob/main/img/ter_15.jpg)  
-
+ ![ter_14](https://github.com/user-attachments/assets/85117b3f-1b27-4da2-9d48-99e52f279a59)
+ ![ter_15](https://github.com/user-attachments/assets/080fecf1-9120-48bf-b39e-09a812ec670d)
+ 
 5. Выполним код. В качестве ответа приложим: исправленный фрагмент кода и вывод команды ```docker ps```.  
- ![рис 16](https://github.com/ysatii/terraform_hw1/blob/main/img/ter_16.jpg)  
- ![рис 17](https://github.com/ysatii/terraform_hw1/blob/main/img/ter_17.jpg)  
- ![рис 18](https://github.com/ysatii/terraform_hw1/blob/main/img/ter_18.jpg)  
+ ![ter_16](https://github.com/user-attachments/assets/9cb23f5b-a103-4732-b68e-9ec3928caab2)
+ ![ter_17](https://github.com/user-attachments/assets/0dc744a3-7859-46f8-8b6c-11ecd9ab1131)
+ ![ter_18](https://github.com/user-attachments/assets/0dbec0ca-ecdd-49a8-b635-38e602c86b93)
  
 6. Заменим имя docker-контейнера в блоке кода на hello_world. Не перепутайте имя контейнера и имя образа. Мы всё ещё продолжаем использовать name = "nginx:latest". Выполните команду terraform apply -auto-approve.
- ![рис 31](https://github.com/ysatii/terraform_hw1/blob/main/img/ter_31.jpg)  
--auto-approve опасен тем что выполнит скрипт автоматически что может привести к необратимым последствиям в случаии ошибок!
-такая опция может быть необходима для систем  CI/CD где действия нужноь выполнять автоматичеси!  
+ ![ter_31](https://github.com/user-attachments/assets/e588e181-a746-4019-ad38-8c5ee59a6370)
+ Опция -auto-approve позволяет автоматически применять изменения без запроса подтверждения у пользователя. Это может привести к тому, что нежелательные или ошибочные изменения будут внедрены в систему без должной проверки. Например, если в конфигурации есть ошибка или недоразумение, оно может быть немедленно применено, что может вызвать сбой или потерю данных.  
 
-7. Удалим  объекты созданныые terraform 
- ![рис 32](https://github.com/ysatii/terraform_hw1/blob/main/img/ter_32.jpg)  
- ![рис 33](https://github.com/ysatii/terraform_hw1/blob/main/img/ter_33.jpg)  
-
+7. Удалим  объекты созданные terraform 
+ ![ter_32](https://github.com/user-attachments/assets/ce98d1e9-0ba8-4af7-9690-065e7181fa6a)
+ ![ter_33](https://github.com/user-attachments/assets/5b5c29c9-799a-4d70-804a-4ef96436e1fc)
+ 
 8. Объясните, почему при этом не был удалён docker-образ nginx:latest. Ответ ОБЯЗАТЕЛЬНО НАЙДИТЕ В ПРЕДОСТАВЛЕННОМ КОДЕ, а затем ОБЯЗАТЕЛЬНО ПОДКРЕПИТЕ строчкой из документации terraform провайдера docker. (ищите в классификаторе resource docker_image )
 
-потому что использовали параметр keep_locally = true при создании образа.  
-
+потому что использовали параметр keep_locally = true при создании образа.Т.е. при удалении ресурса сам image останется в локальном хранилище docker. 
+Из документации:
+keep_locally - (Boolean) If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
 
 
